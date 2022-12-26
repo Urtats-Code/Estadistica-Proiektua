@@ -26,10 +26,12 @@ for(dado1 in 1:6)
     for(dado3 in 1:6)
     {
       num = dado1 + dado2 + dado3
-      dadoKasuenBektorea[num] = dadoKasuenBektorea[num] + 1 
+      dadoKasuenBektorea[num] = dadoKasuenBektorea[num] + 1
     }
   }
 }
+
+
 
 probabilitateenBektorea = c(replicate(18,0))
 probabilitateenBektorea = dadoKasuenBektorea/216
