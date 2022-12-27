@@ -18,7 +18,7 @@
 # Jakinda konbinazio posible guztiak goazen haien distribuzioa lortzera: 
 
 num = 0
-dadoKasuenBektorea = c(replicate(18,0))
+konbinazioBektorea = c(replicate(18,0))
 for(dado1 in 1:6)
 {
   for(dado2 in 1:6)
@@ -26,15 +26,15 @@ for(dado1 in 1:6)
     for(dado3 in 1:6)
     {
       num = dado1 + dado2 + dado3
-      dadoKasuenBektorea[num] = dadoKasuenBektorea[num] + 1
+      konbinazioBektorea[num] = konbinazioBektorea[num] + 1
     }
   }
 }
 
 
 
-probabilitateenBektorea = c(replicate(18,0))
-probabilitateenBektorea = dadoKasuenBektorea/216
+probabilitateenBektorea = c()
+probabilitateenBektorea = konbinazioBektorea/216
 laginekoElementuKopurua = length(probabilitateenBektorea)
 # Azalpena: bektorean zenbaki bakoitza ateratzeko probabilitatea gordeko da baina taula ulergarria izan dadin bakarrik konbinazio posibleak adierazten dira
 # Lortutako konbinazio posibleak: ---------------------------------------------
@@ -232,7 +232,7 @@ dadoSimulazio1000
 
 # X-ren banaketa teorikoa kalkulatzeko, hiru dado 100 aldiz jaurtitzeko eta haren batez bestekoa 1000 aldiz kalkulatzeko esperimentua errepikatuko dugu. 
 # Horretarako, batezbesteko bakoitza 1000 elementuko bektore batean gordeko dugu, bat esperimentu bakoitzeko. 
-# Ondoren, banaketa histograma baten eta haren "itxaropena" markatuko duen lerro baten bidez erakutsiko dugu.
+# Ondoren, banaketa histograma baten eta haren itxaropena markatuko duen lerro baten bidez erakutsiko dugu.
 
 K = 1000
 n = 100
@@ -260,9 +260,148 @@ hist(dadoLagina1000,
         border = "#ffffff")
 
 
-# itxaropen teorikoa irudikatu
+# ======================================================
+#
+#                           Bigarren 
+#                            Zatia
+#
+# ======================================================
 
-abline(v = mean(dadoLagina1000), col = "red" )
+
+# 1 atala
+
+setwd("C:/Users/urtat/OneDrive/Escritorio/EMI Proiektua Urtats Berrocal")
+# datuak irakurri 
+datuak = read.table("datuak.csv", header =TRUE)
+# 100 m probaren emaitzak eskuratu
+emaitzak100m = datuak$X100m
+sortedEmaitzak100m = sort(emaitzak100m)
+# Aldagai jarraituak dauzkagu 
+
+laginTamaina = length(sortedEmaitzak100m)
+
+
+# chi-karratua ondo amoldatuko da kasu honetara
+
+# Bataz bestekoa
+
+batazbesteko100m = mean(sortedEmaitzak100m)
+
+# mediana 
+
+mediana100m = sortedEmaitzak100m[round(laginTamaina / 2)]
+
+# Azkarrena 
+
+motelena = sortedEmaitzak100m[laginTamaina]
+motelenaID = match(azkarrena, emaitzak100m)
+
+# Azkarrena 
+
+azkarrena = sortedEmaitzak100m[1]
+azkarrenaID = match(motelena, emaitzak100m)
+
+# Kuartilak 
+
+Q1 = sortedEmaitzak100m[ round(laginTamaina * 0.25)]
+Q2 = sortedEmaitzak100m[ round(laginTamaina * 0.50)]
+Q3 = sortedEmaitzak100m[ round(laginTamaina * 0.75)]
+
+# Erregela enpirikoa tresna baliagarria da datu-banaketaren mediana kalkulatzeko, haren ausazko lagin batean oinarrituta. 
+# Hala ere, arau hau soilik aplikatzen da datuen banaketak kanpai forma duenean, banaketa normala bezala. 
+# Datuen banaketak forma hori ez badu, banaketa txi-karratu baten kasuan bezala, erregela enpirikoa ez da aplikatzen eta beste teknika batzuk datuen mediana kalkulatzeko erabili behar dira. 
+# Beraz, kasu honetan, ezin dugu arau enpirikoa aplikatu, datuen banaketak ez baititu betetzen hura aplikatzeko beharrezko baldintzak.
+
+
+# 2 atala
+
+emaitzak100m
+luzeraJausia = datuak$LuzeraJauzia
+PisuJaurtiketa = datuak$PisuJaurtiketa
+AltueraJauzia = datuak$AltueraJauzia
+X400m = datuak$X400m
+X110mHesi = datuak$X110mHesi
+DiskoJaurtiketa = datuak$DiskoJaurtiketa
+PertikaJausia = datuak$PertikaJauzia
+Xabalina = datuak$Xabalina
+X1500m = datuak$X1500m
+
+
+
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(luzeraJausia, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(PisuJaurtiketa, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(AltueraJauzia, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(X400m, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(X110mHesi, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(DiskoJaurtiketa, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(PertikaJausia, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(Xabalina, col= "blue")
+plot(emaitzak100m, col = "red")
+par(new=TRUE)
+plot(X1500m, col= "blue")
+par(mfrow=c(1,1))
+
+
+
+# grafikoei ikusita dirudi ez dagoela korrelaziorik
+
+# Bakoitzarekiko correlazio bilatuko dugu
+korrelazioBektorea = c(cor(emaitzak100m,luzeraJausia),
+                       cor(emaitzak100m,PisuJaurtiketa),
+                       cor(emaitzak100m,AltueraJauzia),
+                       cor(emaitzak100m,X400m),
+                       cor(emaitzak100m,X110mHesi),
+                       cor(emaitzak100m,DiskoJaurtiketa),
+                       cor(emaitzak100m,PertikaJausia),
+                       cor(emaitzak100m,Xabalina),
+                       cor(emaitzak100m,X1500m))
+
+korrelazioBektorea
+
+# Diruedinez  korrikarekin erlazioa daukaten probak korrelazio handiago bat dago, bestalde besteekin ya es dago erlazioa edo erlazio negatiboa dago
+# datuak gorde data frame batean 
+dataframe = data.frame(x=emaitzak100m, y=luzeraJausia)
+# errregrezio zuzena kalkulatu
+erregrezioZuzena = lm(y ~ x^2, data = dataframe)
+# erregrezio zuzenetik 10.5 balioa aztertu
+predict(erregrezioZuzena, newdata= data.frame(x=10.5))
+# Puntu hodeia eta erregrezio zuzena marraztu
+plot( dataframe$x, dataframe$y, xlab='x100m', ylab='LuzeeraJauzia')
+abline(erregrezioZuzena, col="red")
+
+
+
+#Determinazio koefizientea
+
+luzeraJausiaBB<-mean(luzeraJausia)
+SYY <-sum((luzeraJausia-luzeraJausiaBB)^2)
+SSreg <- sum((fitted(erregrezioZuzena) - luzeraJausiaBB)^2)
+detKoef1<-(SSreg/SYY)
+
+# ======================================================
+#
+#                           Hirugarren 
+#                            Zatia
+#
+# ======================================================
+
+
 
 
 
