@@ -315,7 +315,6 @@ Q3 = sortedEmaitzak100m[ round(laginTamaina * 0.75)]
 
 # 2 atala
 
-emaitzak100m
 luzeraJausia = datuak$LuzeraJauzia
 PisuJaurtiketa = datuak$PisuJaurtiketa
 AltueraJauzia = datuak$AltueraJauzia
@@ -376,11 +375,11 @@ korrelazioBektorea
 
 # Diruedinez  korrikarekin erlazioa daukaten probak korrelazio handiago bat dago, bestalde besteekin ya es dago erlazioa edo erlazio negatiboa dago
 # datuak gorde data frame batean 
-dataframe = data.frame(x=emaitzak100m, y=luzeraJausia)
+dataframe = data.frame(x = emaitzak100m, y = luzeraJausia)
 # errregrezio zuzena kalkulatu
 erregrezioZuzena = lm(y ~ x^2, data = dataframe)
 # erregrezio zuzenetik 10.5 balioa aztertu
-predict(erregrezioZuzena, newdata= data.frame(x=10.5))
+predict(erregrezioZuzena, newdata = data.frame(x=10.5))
 # Puntu hodeia eta erregrezio zuzena marraztu
 plot( dataframe$x, dataframe$y, xlab='x100m', ylab='LuzeeraJauzia')
 abline(erregrezioZuzena, col="red")
@@ -389,10 +388,10 @@ abline(erregrezioZuzena, col="red")
 
 #Determinazio koefizientea
 
-luzeraJausiaBB<-mean(luzeraJausia)
-SYY <-sum((luzeraJausia-luzeraJausiaBB)^2)
-SSreg <- sum((fitted(erregrezioZuzena) - luzeraJausiaBB)^2)
-detKoef1<-(SSreg/SYY)
+luzeraJausiaBB = mean(luzeraJausia)
+SYY = sum((luzeraJausia-luzeraJausiaBB)^2)
+SSreg = sum((fitted(erregrezioZuzena) - luzeraJausiaBB)^2)
+determinazioKoefizientea = (SSreg/SYY)
 
 # ======================================================
 #
@@ -400,6 +399,13 @@ detKoef1<-(SSreg/SYY)
 #                            Zatia
 #
 # ======================================================
+
+
+# Konfiantza tartea kalkulatu 
+
+ItxaropenTarteaEzOsoa = qchisq(0.975, df = 5 ,  lower.tail = TRUE , log.p = FALSE )
+KenduBeharrrekoa = qchisq(0.025, df = 5 ,  lower.tail = TRUE , log.p = FALSE )
+ItxaropenTartea = ItxaropenTarteaEzOsoa - KenduBeharrrekoa
 
 
 
